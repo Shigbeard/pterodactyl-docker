@@ -1,17 +1,24 @@
+# Build sftp-server artifact
+FROM golang:alpine3.10 as BUILDER
+RUN apk add git
+ARG VERSION
+ENV SFTP_VERSION=${VERSION}
+RUN git clone -b release/${SFTP_VERSION} https://github.com/MrFlutters/pterodactyl-sftp-server.git /app
+WORKDIR /app 
+RUN GOOS=linux go build -o /app/build/sftp-server .
+
+# Build runtime Image
 FROM alpine:latest
 
-ARG VERSION
+LABEL maintainer="MrFlutters"
 
-ENV SFTP_VERSION=${VERSION} \
-    UID=500
+ENV UID=500
+RUN mkdir -p /srv/sftp
+COPY --from=BUILDER /app/build/sftp-server /srv/sftp/sftp-server
 
-RUN mkdir /srv/daemon -p; \
-    wget -P /srv/daemon https://github.com/pterodactyl/sftp-server/releases/download/${SFTP_VERSION}/sftp-server; \
-    chmod +x /srv/daemon/sftp-server; \
-    addgroup -S -g ${UID} pterodactyl && adduser -S -D -H -G pterodactyl -u ${UID} -s /bin/false pterodactyl
+RUN chmod +x /srv/sftp/sftp-server \
+    && addgroup -S -g ${UID} pterodactyl \
+    && adduser -S -D -H -G pterodactyl -u ${UID} -s /bin/false pterodactyl
 
-EXPOSE 2022
-
-WORKDIR /srv/daemon
+WORKDIR /srv/sftp
 ENTRYPOINT [ "./sftp-server" ]
-CMD [ "-port", "2022" ] 

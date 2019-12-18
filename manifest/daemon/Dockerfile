@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-MAINTAINER Cameron Carney <ccarney16@live.com>
+LABEL maintainer="MrFlutters"
 
 ARG VERSION
 
@@ -11,7 +11,7 @@ WORKDIR /srv/daemon
 
 RUN \
  apk --update --no-cache add coreutils curl openssl make gcc g++ python gnupg tar \
- && curl -Lo daemon.tar.gz https://github.com/Pterodactyl/Daemon/archive/${DAEMON_VERSION}.tar.gz \
+ && curl -Lo daemon.tar.gz https://github.com/MrFlutters/pterodactyl-daemon/archive/${DAEMON_VERSION}.tar.gz \
  && tar --strip-components=1 -xzvf daemon.tar.gz \
  && rm -f daemon.tar.gz \
  && npm install --production \
