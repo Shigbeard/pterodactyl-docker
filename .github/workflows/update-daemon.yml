@@ -37,3 +37,11 @@ jobs:
         tags: |
           "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DAEMON_PROJECT_NAME }}:latest"
           "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DAEMON_PROJECT_NAME }}:${{ steps.read_version.outputs.version }}"
+
+    - uses: sarisia/actions-status-discord@v1
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        nodetail: true
+        title: New build of `${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DAEMON_PROJECT_NAME }}` is out!
+        description: |
+          Version `${{ steps.read_version.outputs.version }}`
