@@ -5,7 +5,7 @@ LABEL maintainer="MrFlutters"
 ARG VERSION
 
 ENV STARTUP_TIMEOUT=5 \
-    PANEL_VERSION=v${VERSION}
+    PANEL_VERSION=${VERSION}
 
 WORKDIR /var/www/html
 
