@@ -45,3 +45,4 @@ jobs:
         title: New build of `${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PANEL_PROJECT_NAME }}` is out!
         description: |
           Version `${{ steps.read_version.outputs.version }}`
+          https://github.com/pterodactyl/panel/releases/tag/${{ steps.read_version.outputs.version }}

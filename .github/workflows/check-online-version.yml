@@ -52,6 +52,7 @@ jobs:
   request_daemon_build:
     name: Request Daemon Build
     runs-on: ubuntu-latest
+    if: needs.get_versions.outputs.latest_daemon_version != needs.get_versions.outputs.current_daemon_version
     needs:
     - get_versions
     - update-version-txt
@@ -68,6 +69,7 @@ jobs:
 
   request_panel_build:
     name: Request Panel Build
+    if: needs.get_versions.outputs.latest_panel_version != needs.get_versions.outputs.current_panel_version
     runs-on: ubuntu-latest
     needs:
     - get_versions
