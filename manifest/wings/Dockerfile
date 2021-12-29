@@ -24,6 +24,7 @@ RUN \
 # Copy wings from build stage
 COPY --from=build /wings/wings /usr/local/bin
 COPY ./root /
+RUN chmod 755 /entrypoint.sh
 
 EXPOSE 8080
 EXPOSE 2022
