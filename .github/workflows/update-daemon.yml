@@ -6,7 +6,7 @@ env:
     DAEMON_PROJECT_NAME: pterodactyl-wings-daemon
 jobs:
   build_push_wings_x64:
-    name: Build and Push Wings Container
+    name: Build x64 Wings
     runs-on: ubuntu-latest
     steps:
     - name: Setup repo
@@ -48,7 +48,7 @@ jobs:
           https://github.com/pterodactyl/wings/releases/tag/${{ steps.read_version.outputs.version }}
 
   build_push_wings_arm64:
-    name: Build and Push Wings Container
+    name: Build ARM64 Wings
     runs-on: [self-hosted, linux, ARM64]
     steps:
     - name: Setup repo
