@@ -1,3 +1,17 @@
+FROM node:14 AS BUILDER
+
+RUN mkdir /tmp/panel
+
+WORKDIR /tmp/panel
+
+RUN \
+ apt update \
+ && apt install git \
+ && git clone -b gameinfo https://github.com/Shigbeard/pterodactyl-panel \
+ && cd pterodactyl-panel \
+ && yarn install \
+ && yarn build:production 
+
 FROM alpine:3.15
 
 LABEL maintainer="MrFlutters"
@@ -7,7 +21,7 @@ ARG VERSION
 ENV STARTUP_TIMEOUT=5 \
     PANEL_VERSION=${VERSION}
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/
 
 RUN \
  apk --update add curl gettext nginx php7 php7 php7-bcmath php7-common php7-dom php7-fileinfo \
@@ -15,11 +29,10 @@ RUN \
  php7-pdo_mysql php7-session php7-simplexml php7-tokenizer php7-ctype php7-zlib php7-zip tini \
  && mkdir -p /var/www/html /run/nginx /etc/nginx/conf.d/
  
+COPY --from=BUILDER /tmp/panel/pterodactyl-panel /var/www/html
+
 RUN \
- curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/download/${PANEL_VERSION}/panel.tar.gz \
- && tar -xzvf panel.tar.gz \
- && rm panel.tar.gz \
- && chmod -R 755 storage/* bootstrap/cache \
+ chmod -R 755 storage/* bootstrap/cache \
  && find storage -type d > .storage.tmpl \
  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
  && cp .env.example .env \
