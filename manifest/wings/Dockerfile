@@ -5,9 +5,9 @@ ARG VERSION
 RUN \
     apk add git \
     && cd / \ 
-    && git clone https://github.com/pterodactyl/wings --depth 1 --branch ${VERSION} \
+    && git clone https://github.com/Shigbeard/pterodactyl-wings --depth 1 --branch ${VERSION} \
     && cd wings \
-    && CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
+    && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
         -ldflags="-s -w -X github.com/pterodactyl/wings/system.Version=$VERSION" \
         -v \
         -trimpath \
@@ -15,6 +15,7 @@ RUN \
         wings.go
 
 FROM alpine:latest as final
+
 LABEL maintainer="Phoenix"
 
 RUN \
@@ -23,6 +24,7 @@ RUN \
 
 # Copy wings from build stage
 COPY --from=build /wings/wings /usr/local/bin
+
 COPY ./root /
 RUN chmod 755 /entrypoint.sh
 
