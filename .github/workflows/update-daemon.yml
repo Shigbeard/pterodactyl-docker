@@ -14,7 +14,7 @@ jobs:
 
     - id: prepare-docker-image-identifiers
       name: Prepare Docker Image Identifiers
-      run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+      run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     # - name: Read Version
     #   id: read_version
