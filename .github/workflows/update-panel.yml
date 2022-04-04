@@ -12,6 +12,10 @@ jobs:
     - name: Setup repo
       uses: actions/checkout@v2
 
+    - id: prepare-docker-image-identifiers
+      name: Prepare Docker Image Identifiers
+      run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+
     # - name: Read Version
     #   id: read_version
     #   run: |
@@ -35,6 +39,8 @@ jobs:
         platforms: linux/amd64
         build-args: VERSION=${{ steps.read_version.outputs.version }}
         push: true
-        tags: "ghcr.io/${{ github.actor }}/pterodactyl-docker/${{ env.PANEL_PROJECT_NAME }}:latest"
+        tags: "ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ env.PANEL_PROJECT_NAME }}:latest"
+
+
 
 # "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.PANEL_PROJECT_NAME }}:${{ steps.read_version.outputs.version }}"
