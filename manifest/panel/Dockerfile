@@ -7,7 +7,7 @@ WORKDIR /tmp/panel
 RUN \
  apt update \
  && apt install git \
- && git clone -b gameinfo https://github.com/Shigbeard/pterodactyl-panel \
+ && git clone -b gameinfo https://github.com/Shigbeard/pterodactyl-panel --depth 1 \
  && cd pterodactyl-panel \
  && yarn install \
  && yarn build:production 

@@ -5,7 +5,7 @@ ARG VERSION
 RUN \
     apk add git \
     && cd / \ 
-    && git clone https://github.com/Shigbeard/pterodactyl-wings --depth 1 --branch ${VERSION} \
+    && git clone -b gameinfo https://github.com/Shigbeard/pterodactyl-wings --depth 1 \
     && cd wings \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
         -ldflags="-s -w -X github.com/pterodactyl/wings/system.Version=$VERSION" \
