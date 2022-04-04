@@ -6,7 +6,7 @@ RUN \
     apk add git \
     && cd / \ 
     && git clone -b gameinfo https://github.com/Shigbeard/pterodactyl-wings --depth 1 \
-    && cd wings \
+    && cd pterodactyl-wings \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
         -ldflags="-s -w -X github.com/pterodactyl/wings/system.Version=$VERSION" \
         -v \
@@ -23,7 +23,7 @@ RUN \
     && mkdir -p /etc/pterodactyl /var/log/pterodactyl /tmp/pterodactyl 
 
 # Copy wings from build stage
-COPY --from=build /wings/wings /usr/local/bin
+COPY --from=build /pterodactyl-wings/wings /usr/local/bin
 
 COPY ./root /
 RUN chmod 755 /entrypoint.sh
