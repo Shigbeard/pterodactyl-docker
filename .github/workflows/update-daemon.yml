@@ -23,7 +23,8 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: shigbeard
+        registry: ghcr.io
+        username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and Push
@@ -34,5 +35,5 @@ jobs:
         platforms: linux/amd64
         push: true
         build-args: VERSION=${{ steps.read_version.outputs.version }}
-        tags: "ghcr.io/shigbeard/pterodactyl-docker/${{ env.DAEMON_PROJECT_NAME }}:latest"
+        tags: "ghcr.io/${{ github.actor }}/pterodactyl-docker/${{ env.DAEMON_PROJECT_NAME }}:latest"
 # "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DAEMON_PROJECT_NAME }}:${{ steps.read_version.outputs.version }}"
